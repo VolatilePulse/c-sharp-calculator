@@ -13,7 +13,7 @@ namespace CalculatorForm
     public partial class CalculatorForm : Form, INotifyPropertyChanged
     {
         private decimal _LastReading;
-        private string myString = "Fred";
+        private string myString = "";
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -22,6 +22,7 @@ namespace CalculatorForm
             InitializeComponent();
             Calc = new Calculator.Core.Calculator();
             Calc.ReadingChanged += Calc_ReadingChanged;
+
             ReadingTextBox.DataBindings.Add("Text", this, "MyString");
         }
         public string MyString
@@ -51,6 +52,25 @@ namespace CalculatorForm
         {
             var myCalc = (Calculator.Core.Calculator)sender;
             LastReading = myCalc.Reading;
+        }
+
+        private void RangeChanged(object sender, EventArgs e)
+        {
+            var min = ReadingRangeMin.Value;
+            var max = ReadingRangeMax.Value;
+
+            bool isValid = min < max;
+
+            SetRangeIsValid(isValid);
+
+            if (isValid)
+                Calc.NewRange(min, max);
+        }
+
+        private void SetRangeIsValid(bool isValid)
+        {
+            ReadingRangeMin.BackColor = ReadingRangeMax.BackColor = isValid ? Color.White : Color.Red;
+            NewReadingButton.Enabled = isValid;
         }
     }
 }

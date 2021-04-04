@@ -7,6 +7,8 @@ namespace Calculator.Core
         private decimal _Reading;
         public event EventHandler ReadingChanged;
         public bool IsReadingValid { get; private set; } = false;
+        private decimal _Min = 5;
+        private decimal _Factor = 5;
 
         public decimal Reading
         {
@@ -21,9 +23,18 @@ namespace Calculator.Core
             }
         }
 
+        public void NewRange(decimal min, decimal max)
+        {
+            if (min > max)
+                throw new ArgumentException();
+
+            _Min = min;
+            _Factor = max - min;
+        }
+
         public void GenerateReading()
         {
-            var newReading = (decimal)new Random().NextDouble() * 5 + 5;
+            var newReading = (decimal)new Random().NextDouble() * _Factor + _Min;
             IsReadingValid = true;
 
             Reading = newReading;

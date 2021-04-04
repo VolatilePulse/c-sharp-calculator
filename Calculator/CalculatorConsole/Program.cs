@@ -9,6 +9,7 @@ namespace CalculatorConsole
         {
             var myCalc = new Calculator.Core.Calculator();
             myCalc.ReadingChanged += MyCalc_ReadingChanged;
+            myCalc.NewRange(200, 50);
 
             for (int i = 0; i < 10; i ++)
             {
